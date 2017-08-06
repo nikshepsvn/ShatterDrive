@@ -4,8 +4,14 @@
 
 #------------- SHARE COMPUTATION -------------#
 
-with open("test.txt", "rb") as test:
-  f = test.read()
-  b = bytearray(f)
+def read_file(path, block_size=1024):
+    with open(path, 'rb') as f:
+        while True:
+            piece = f.read(block_size)
+            if piece:
+                yield piece
+            else:
+                return
 
-print (len(b))
+for piece in read_file('test.txt'):
+    print(piece)
