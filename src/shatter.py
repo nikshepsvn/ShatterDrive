@@ -1,40 +1,58 @@
 # shatter.py is an implementation of Shamir's Secret Sharing Algorithm adapted to efficiently work on files.
 #------------- IMPORTS -------------#
 from random import SystemRandom
-
+random_gen = SystemRandom()
 
 #------------- CONSTANTS -------------#
 
 PATH = "test.txt"
+BLOCK_SIZE = 1024
 
 #------------- SHARE COMPUTATION -------------#
 
 #function that returns a Cryptographically secure random number in between the ranges
 def random_num(min, max):
-    return random.SystemRandom.randint(min,max)
+    return random_gen.randint(min,max)
 
 #polynomial_gen is a function that takes in a number and generates a polynomial
 def polynomial_gen(secret_bit, share_treshold):
-    share_array = []
+    share_byte_list = []
     coeffecient = share_treshold - 1
-    for x in range (1, coeffecient):
-        share_array.append(random_num(0, 256))
+
+    for x in range (0, coeffecient):
+        share_byte_list.append(random_num(-128, 127))
+
+    share_byte_list.append(secret_bit)
+
+    return share_byte_list
 
 
-# sharder is a function that takes in a chunk of data and splits it into shares using SSSA
-def create_shard(data, share_treshold):
-    print(data)
+# create_shard is a function that takes in a chunk of data and splits it into shares using SSSA
+def create_pack_of_share_bytes_from_chunk(chunk, share_treshold):
+    pack_of_share_bytes = []
+
+    for x in chunk:
+        pack_of_share_bytes.append(polynomial_gen(chunk[x], share_treshold))
+
+    return pack_of_share_bytes
 
 # read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes.
-def read_file(path, block_size=1024):
+def read_chunks(path, block_size=1024):
     with open(path, 'rb') as f:
         while True:
             piece = f.read(block_size)
             if piece:
-                yield piece
+                yield bytearray(piece)
             else:
                 return
 
 #process_data is currently a placeholder function name for the function that will be actually handling the piece recieved
-for piece in read_file(PATH):
-    create_shard(bytearray(piece))
+def chunk_sharder (share_treshold, number_of_shares):
+    pack_of_shares = []
+
+    for chunk in read_chunks(PATH):
+        pack_of_shares.append(create_pack_of_share_bytes_from_chunk(chunk, share_treshold))
+
+    return pack_of_shares
+
+print(chunk_sharder(3, 5)) # test statement
