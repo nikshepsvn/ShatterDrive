@@ -14,6 +14,16 @@ BLOCK_SIZE = 1024
 def random_num(min, max):
     return random_gen.randint(min,max)
 
+# read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes.
+def read_chunks(path, block_size=1024):
+    with open(path, 'rb') as f:
+        while True:
+            piece = f.read(block_size)
+            if piece:
+                yield bytearray(piece)
+            else:
+                return
+
 #polynomial_gen is a function that takes in a number and generates a polynomial
 def polynomial_gen(secret_bit, share_treshold):
     share_byte_list = []
@@ -26,33 +36,31 @@ def polynomial_gen(secret_bit, share_treshold):
 
     return share_byte_list
 
-
 # create_shard is a function that takes in a chunk of data and splits it into shares using SSSA
-def create_pack_of_share_bytes_from_chunk(chunk, share_treshold):
+def create_pack_of_share_for_byte(piece, share_treshold, number_of_shares):
     pack_of_share_bytes = []
 
-    for x in chunk:
-        pack_of_share_bytes.append(polynomial_gen(chunk[x], share_treshold))
+    for x in range (0, number_of_shares):
+        pack_of_share_bytes.append(polynomial_gen(piece, share_treshold))
 
     return pack_of_share_bytes
 
-# read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes.
-def read_chunks(path, block_size=1024):
-    with open(path, 'rb') as f:
-        while True:
-            piece = f.read(block_size)
-            if piece:
-                yield bytearray(piece)
-            else:
-                return
+def create_pack_of_shares(chunk, share_treshold, number_of_shares):
+    pack_of_shares = []
 
-#process_data is currently a placeholder function name for the function that will be actually handling the piece recieved
+    for x in chunk:
+        pack_of_shares.append(create_pack_of_share_for_byte(x, share_treshold, number_of_shares))
+
+    return pack_of_shares
+
+#chunk_sharder is a function that coverts
 def chunk_sharder (share_treshold, number_of_shares):
     pack_of_shares = []
 
     for chunk in read_chunks(PATH):
-        pack_of_shares.append(create_pack_of_share_bytes_from_chunk(chunk, share_treshold))
+        pack_of_shares.append(create_pack_of_shares(chunk, share_treshold, number_of_shares))
 
     return pack_of_shares
+
 
 print(chunk_sharder(3, 5)) # test statement
