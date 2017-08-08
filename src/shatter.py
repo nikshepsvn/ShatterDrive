@@ -9,6 +9,18 @@ PATH = "test.txt"
 
 #------------- SHARE COMPUTATION -------------#
 
+#function that returns a Cryptographically secure random number in between the ranges
+def random_num(min, max):
+    return random.SystemRandom.randint(min,max)
+
+#polynomial_gen is a function that takes in a number and generates a polynomial
+def polynomial_gen(secret_bit, share_treshold):
+    share_array = []
+    coeffecient = share_treshold - 1
+    for x in range (1, coeffecient):
+        share_array.append(random_num(0, 256))
+
+
 # sharder is a function that takes in a chunk of data and splits it into shares using SSSA
 def create_shard(data, share_treshold):
     print(data)
