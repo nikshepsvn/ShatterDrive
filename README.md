@@ -1,2 +1,2 @@
 # ShatterDrive
-An implementation of a decentralized InterPlanetary File System (IPFS) using existing cloud storage providers.
+An open source implementation of a secure decentralized p2p File Storage network.
