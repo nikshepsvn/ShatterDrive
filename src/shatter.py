@@ -1,7 +1,11 @@
 # shatter.py is an implementation of Shamir's Secret Sharing Algorithm adapted to efficiently work on files.
 #------------- IMPORTS -------------#
+
 from random import SystemRandom
+
+# instantiating SystemRandom
 random_gen = SystemRandom()
+
 
 #------------- CONSTANTS -------------#
 
@@ -15,10 +19,10 @@ def random_num(min, max):
     return random_gen.randint(min,max)
 
 # read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes.
-def read_chunks(path, block_size=1024):
-    with open(path, 'rb') as f:
+def read_chunks(PATH, BLOCK_SIZE):
+    with open(PATH, 'rb') as f:
         while True:
-            piece = f.read(block_size)
+            piece = f.read(BLOCK_SIZE)
             if piece:
                 yield bytearray(piece)
             else:
@@ -57,10 +61,10 @@ def create_pack_of_shares(chunk, share_treshold, number_of_shares):
 def chunk_sharder (share_treshold, number_of_shares):
     pack_of_shares = []
 
-    for chunk in read_chunks(PATH):
-        pack_of_shares.append(create_pack_of_shares(chunk, share_treshold, number_of_shares))
+    for chunk in read_chunks(PATH, BLOCK_SIZE):
+        pack_of_shares.extend(create_pack_of_shares(chunk, share_treshold, number_of_shares))
 
     return pack_of_shares
 
 
-print(chunk_sharder(3, 5)) # test statement
+print(chunk_sharder(3, 5))
