@@ -40,6 +40,12 @@ def polynomial_gen(secret_bit, share_treshold):
 
     return share_byte_list
 
+def share_compute_from_polynomial (polynomial, threshold):
+    x = random_gen.randint(-128,127)
+
+    for i in range (1, threshold):
+        y = polynomial[i-1]*x^(threshold-i)
+
 # create_shard is a function that takes in a chunk of data and splits it into shares using SSSA
 def create_pack_of_share_for_byte(piece, share_treshold, number_of_shares):
     pack_of_share_bytes = []
@@ -65,6 +71,5 @@ def chunk_sharder (share_treshold, number_of_shares):
         pack_of_shares.extend(create_pack_of_shares(chunk, share_treshold, number_of_shares))
 
     return pack_of_shares
-
 
 print(chunk_sharder(3, 5))
