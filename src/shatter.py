@@ -2,74 +2,65 @@
 #------------- IMPORTS -------------#
 
 from random import SystemRandom
+from scipy import interpolate
+import numpy as np
 
-# instantiating SystemRandom
+# instantiating SystemRandom as randomgen
 random_gen = SystemRandom()
 
 
 #------------- CONSTANTS -------------#
 
-PATH = "test.txt"
-BLOCK_SIZE = 1024
+PATH = "test.txt" #location of file to shatter
+BLOCK_SIZE = 1024 #Currently set at 1024 bytes, ie. 1MB chunks
 
 #------------- SHARE COMPUTATION -------------#
 
 #function that returns a Cryptographically secure random number in between the ranges
 def random_num(min, max):
-    return random_gen.randint(min,max)
+	return random_gen.randint(min,max)
 
-# read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes.
-def read_chunks(PATH, BLOCK_SIZE):
-    with open(PATH, 'rb') as f:
-        while True:
-            piece = f.read(BLOCK_SIZE)
-            if piece:
-                yield bytearray(piece)
-            else:
-                return
+#read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes of type typearray.
+def read_data_in_chunks(PATH, BLOCK_SIZE):
+	with open(PATH, 'rb') as f:
+		while True:
+			piece = f.read(BLOCK_SIZE)
+			if piece:
+				yield bytearray(piece)
+			else:
+				return
 
 #polynomial_gen is a function that takes in a number and generates a polynomial
-def polynomial_gen(secret_bit, share_treshold):
-    share_byte_list = []
-    coeffecient = share_treshold - 1
+def polynomial_gen(secret, threshold):
+	coeffecient = threshold - 1
+	coefficient_list = []
 
-    for x in range (0, coeffecient):
-        share_byte_list.append(random_num(-128, 127))
+	for x in range (0, coeffecient): #loop generates the co-effients for the poloynomials
+		coefficient_list.append(random_num(-128, 127))
 
-    share_byte_list.append(secret_bit)
+	coefficient_list.append(secret)
 
-    return share_byte_list
+	return coefficient_list #this contains all the co-effients from the polynomials, 
+							#ie. if a polynomial is in the form of y=ax^2+bx+c, then coefficient_list = [a,b,c]
 
-def share_compute_from_polynomial (polynomial, threshold):
-    x = random_gen.randint(-128,127)
+def get_points_from_polynomial (coefficient_list, threshold, shares):
+	array_of_points = []
+	x_points = []
+	y_points = []
 
-    for i in range (1, threshold):
-        y = polynomial[i-1]*x^(threshold-i)
+	for j in range(0, shares):
+		x = random_num(-128,127)
+		y = 0
+		for i in range (1, threshold+1):
+			y = y + coefficient_list[i-1]*x**(threshold-i)
+		x_points.append(x)
+		y_points.append(y)
+		array_of_points.append([x,y])
 
-# create_shard is a function that takes in a chunk of data and splits it into shares using SSSA
-def create_pack_of_share_for_byte(piece, share_treshold, number_of_shares):
-    pack_of_share_bytes = []
+	return [x_points, y_points]
 
-    for x in range (0, number_of_shares):
-        pack_of_share_bytes.append(polynomial_gen(piece, share_treshold))
+def generate_points_with_secret_shares_and_threshold(secret, threshold, shares):
+	return get_points_from_polynomial(polynomial_gen(secret, threshold), threshold, shares)
 
-    return pack_of_share_bytes
-
-def create_pack_of_shares(chunk, share_treshold, number_of_shares):
-    pack_of_shares = []
-
-    for x in chunk:
-        pack_of_shares.append(create_pack_of_share_for_byte(x, share_treshold, number_of_shares))
-
-    return pack_of_shares
-
-#chunk_sharder is a function that coverts
-def chunk_sharder (share_treshold, number_of_shares):
-    pack_of_shares = []
-
-    for chunk in read_chunks(PATH, BLOCK_SIZE):
-        pack_of_shares.extend(create_pack_of_shares(chunk, share_treshold, number_of_shares))
-
-    return pack_of_shares
-
-print(chunk_sharder(3, 5))
+def reconstruct_secret(x_points, y_points):
+	return np.rint(interpolate.barycentric_interpolate(x, y, 0))
