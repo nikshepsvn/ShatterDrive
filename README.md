@@ -17,7 +17,7 @@ ShatterDrive lets you do 2 things.
 1) Host data on your computer (becoming a node on the Shatterverse)
 2) Store data on the Shatterverse
 
-Currently ShatterDrive works on a volunteer based model -- where users voluntarily give up local disk space to the network -- after ShatterDrive has been fully implemented we will be switching over to a Barter based model where you recieve X bytes of data for every Y bytes of data you give up -- in the future there might be an option to buy/sell data as well.
+Currently ShatterDrive works on a volunteer based model -- where users voluntarily give up local disk space to the network -- after ShatterDrive has been fully implemented we will be switching over to a Barter based model where you recieve X bytes of data for every Y bytes of space you give up -- in the future there might be an option to buy/sell data as well.
 
 # Current Status
 
