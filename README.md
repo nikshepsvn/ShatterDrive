@@ -5,7 +5,9 @@
 # ShatterDrive
 An open source implementation of a secure decentralized p2p File Storage network.
 
-## Why do we need a decetralized storage network -- why not use Google Drive/Apple Cloud etc.?
+## Why do we need a decetralized storage network?
+
+Why not use Google Drive/Apple Cloud etc.?
 
 1. We cannot depend on centralized networks for privacy (http://bgr.com/2017/03/24/iphone-icloud-hack-threat-is-real/).
 2. Faster access to data due to geographically more proximate nodes.
