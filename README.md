@@ -7,8 +7,8 @@ An open source implementation of a secure decentralized p2p File Storage network
 
 # Why do we need a decetralized storage network -- why not use Google Drive/Apple Cloud etc.?
 
-1. We cannot depend on centralized networks for privacy (read http://bgr.com/2017/03/24/iphone-icloud-hack-threat-is-real/).
-2. Having data stored in a disctributed manner enables us to get the data we need quicker due to geographically closer servers.
+1. We cannot depend on centralized networks for privacy (http://bgr.com/2017/03/24/iphone-icloud-hack-threat-is-real/).
+2. Faster access to data due to geographically more proximate nodes.
 
 # What does ShatterDrive do?
 
@@ -28,7 +28,7 @@ Currently ShatterDrive works on a volunteer based model -- where users voluntari
 
 # RoadMap
 
-- ~Implement file splitting/reconstruction Algoritm.~
+- ~Implement file splitting/reconstruction Algorithm.~
 - Improve file splitting and reconstruction with dynamic compression/decompression. --> In Progress
 - Enable real-time compression during splitting and decompression during reconstruction.
 - Set up network so people can sign up as nodes.
