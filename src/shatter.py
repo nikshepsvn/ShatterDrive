@@ -20,7 +20,7 @@ BLOCK_SIZE = 1024 #Currently set at 1024 bytes, ie. 1MB chunks
 def random_num(min, max):
 	return random_gen.randint(min,max)
 
-#read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes of type typearray.
+#read_file is a function that takes in the path of a file and reads the file in chunks of {block_size} bytes of type bypearray.
 def read_data_in_chunks(PATH, BLOCK_SIZE):
 	with open(PATH, 'rb') as f:
 		while True:
