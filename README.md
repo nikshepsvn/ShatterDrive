@@ -2,9 +2,6 @@
   <img src = "https://i.imgur.com/MLXNeHQ.png" />
 </p>
 
-# ShatterDrive
-An open source implementation of a secure decentralized p2p File Storage network.
-
 ## Why do we need a decetralized storage network?
 
 Why not use Google Drive/Apple Cloud etc.?
