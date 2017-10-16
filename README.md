@@ -28,8 +28,8 @@ Currently ShatterDrive works on a volunteer based model -- where users voluntari
 
 # RoadMap
 
-- I̶m̶p̶l̶e̶m̶e̶n̶t̶ ̶f̶i̶l̶e̶ ̶s̶p̶l̶i̶t̶t̶i̶n̶g̶/̶r̶e̶c̶o̶n̶s̶t̶r̶u̶c̶t̶i̶n̶g̶ ̶a̶l̶g̶o̶r̶i̶t̶h̶m̶.̶
-- Implement efficient file splitting and reconstruction.
+- ~Implement file splitting/reconstruction Algoritm.~
+- Improve file splitting and reconstruction with dynamic compression/decompression. --> In Progress
 - Enable real-time compression during splitting and decompression during reconstruction.
 - Set up network so people can sign up as nodes.
 - Work on distrubution of data and generating hash to retrieve the data.
